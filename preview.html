@@ -1,0 +1,323 @@
+<div class="music-widget">
+
+    <div class="bg" id="bg"></div>
+    <div class="overlay"></div>
+
+    <div class="top">
+
+        <div class="spotify">
+            <svg viewBox="0 0 24 24">
+                <path fill="currentColor"
+                    d="M12,2A10,10 0 1,0 22,12A10,10 0 0,0 12,2M16.59,16.42C16.39,16.75 16,16.84 15.67,16.64C13.5,15.31 10.78,15 7.57,15.7C7.2,15.79 6.83,15.54 6.75,15.17C6.66,14.8 6.91,14.43 7.28,14.35C10.84,13.56 13.89,13.94 16.39,15.46C16.72,15.66 16.81,16.05 16.59,16.42M17.79,13.65C17.54,14.05 17.04,14.17 16.64,13.92C14.15,12.39 10.35,11.95 7.41,12.85C6.96,13 6.5,12.74 6.36,12.3C6.22,11.86 6.47,11.39 6.91,11.25C10.29,10.22 14.49,10.71 17.54,12.57C17.95,12.82 18.05,13.33 17.79,13.65" />
+            </svg>
+        </div>
+
+        <div class="device">
+            🎧 Last.fm
+        </div>
+
+    </div>
+
+    <div class="content">
+
+        <div>
+            <h1 id="music">
+                Carregando...
+            </h1>
+
+            <h2 id="artist">
+                Buscando Last.fm
+            </h2>
+        </div>
+
+        <button id="play">
+            ❚❚
+        </button>
+
+    </div>
+
+    <div class="bottom">
+
+        <button>＋</button>
+
+        <div class="wave">
+            ~
+        </div>
+
+        <div class="bar">
+            <div id="progress"></div>
+        </div>
+
+        <button>▶</button>
+
+        <button>📡</button>
+
+        <button>🖥</button>
+
+    </div>
+
+</div>
+
+<style>
+
+body{
+    margin:0;
+    background:#06070b;
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    font-family:Inter;
+}
+
+.music-widget{
+    width:720px;
+    height:360px;
+    border-radius:45px;
+    overflow:hidden;
+    position:relative;
+    color:white;
+    box-shadow:
+    0 40px 80px rgba(0,0,0,.5);
+}
+
+.bg{
+    position:absolute;
+    inset:0;
+
+    background-size:cover;
+    background-position:center;
+
+    filter:
+    blur(0px)
+    brightness(.85);
+
+    transform:scale(1.08);
+
+    opacity:.95;
+}
+
+.overlay{
+    position:absolute;
+    inset:0;
+
+    background:
+    linear-gradient(
+        90deg,
+        rgba(10,12,18,.65),
+        rgba(10,12,18,.1)
+    );
+}
+
+.top{
+    position:relative;
+
+    display:flex;
+
+    justify-content:
+    space-between;
+
+    padding:28px;
+}
+
+.spotify{
+
+width:45px;
+height:45px;
+
+border-radius:50%;
+
+background:white;
+
+color:black;
+
+display:grid;
+place-items:center;
+
+}
+
+.spotify svg{
+width:24px;
+}
+
+.device{
+
+background:
+rgba(255,255,255,.88);
+
+padding:
+12px 22px;
+
+border-radius:999px;
+
+color:#111;
+
+font-size:22px;
+
+font-weight:700;
+
+backdrop-filter:blur(10px);
+
+}
+
+.content{
+
+position:absolute;
+
+left:40px;
+right:40px;
+
+bottom:120px;
+
+display:flex;
+
+justify-content:
+space-between;
+
+align-items:center;
+
+}
+
+h1{
+
+margin:0;
+
+font-size:48px;
+
+font-weight:800;
+
+}
+
+h2{
+
+margin-top:10px;
+
+font-size:34px;
+
+font-weight:500;
+
+color:
+rgba(255,255,255,.82);
+
+}
+
+#play{
+
+width:95px;
+height:95px;
+
+border:0;
+
+border-radius:28px;
+
+background:
+rgba(255,255,255,.9);
+
+font-size:42px;
+
+cursor:pointer;
+
+}
+
+.bottom{
+
+position:absolute;
+
+left:35px;
+right:35px;
+
+bottom:25px;
+
+display:flex;
+
+gap:20px;
+
+align-items:center;
+
+}
+
+.bottom button{
+
+background:none;
+
+border:none;
+
+color:white;
+
+font-size:28px;
+
+}
+
+.wave{
+font-size:34px;
+}
+
+.bar{
+
+flex:1;
+
+height:6px;
+
+border-radius:99px;
+
+background:
+rgba(255,255,255,.25);
+
+overflow:hidden;
+
+}
+
+#progress{
+
+width:30%;
+
+height:100%;
+
+background:white;
+
+border-radius:99px;
+
+}
+
+</style>
+
+<script>
+
+const apiKey="fb9358a0585f12d5a5f88ade4192fead";
+const user="josemar17";
+
+async function now(){
+
+const url=
+`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${user}&api_key=${apiKey}&format=json&limit=1`;
+
+const r=
+await fetch(url);
+
+const d=
+await r.json();
+
+const t=
+d.recenttracks.track[0];
+
+music.innerText=
+t.name;
+
+artist.innerText=
+t.artist["#text"];
+
+const img=
+t.image.at(-1)["#text"];
+
+bg.style.backgroundImage=
+`url(${img})`;
+
+}
+
+now();
+
+setInterval(
+now,
+30000
+);
+
+</script>
