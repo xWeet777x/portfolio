@@ -29,9 +29,59 @@ const socials = [
 
 const whatsappUrl = "https://api.whatsapp.com/send?phone=5521981004038&text=Ol%C3%A1%2C%20Josemar%21%20Vim%20pelo%20seu%20site%20e%20gostaria%20de%20conversar%20sobre%20um%20projeto.";
 
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://www.josemardossantos.com/#josemar",
+      name: "Josemar dos Santos",
+      alternateName: "Weet",
+      url: "https://www.josemardossantos.com",
+      image: "https://www.josemardossantos.com/josemar-hd.webp",
+      jobTitle: ["Web Designer", "UI/UX Designer", "Desenvolvedor Front-end"],
+      email: "mailto:contato@josemardossantos.com",
+      telephone: "+55 21 98100-4038",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Rio de Janeiro",
+        addressRegion: "RJ",
+        addressCountry: "BR",
+      },
+      sameAs: socials.map(([, href]) => href),
+    },
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://www.josemardossantos.com/#servico",
+      name: "Josemar dos Santos — Design e Desenvolvimento Web",
+      url: "https://www.josemardossantos.com",
+      image: "https://www.josemardossantos.com/og.png",
+      email: "contato@josemardossantos.com",
+      telephone: "+55 21 98100-4038",
+      founder: { "@id": "https://www.josemardossantos.com/#josemar" },
+      areaServed: [
+        { "@type": "City", name: "Rio de Janeiro" },
+        { "@type": "Country", name: "Brasil" },
+      ],
+      serviceType: [
+        "UI/UX Design",
+        "Web Design",
+        "Desenvolvimento Front-end",
+        "Identidade Visual",
+      ],
+    },
+  ],
+};
+
 export default function Home() {
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+        }}
+      />
       <ScrollReveal />
       <div className="site-shell">
         <header className="nav">
@@ -87,6 +137,14 @@ export default function Home() {
                 <p>{item.text}</p>
               </article>
             ))}
+          </div>
+          <div className="local-service" aria-labelledby="servicos-rio">
+            <h2 id="servicos-rio" data-reveal="text">Design e desenvolvimento web no Rio de Janeiro.</h2>
+            <p data-reveal="text" data-delay="1">
+              Crio sites responsivos, interfaces UI/UX e identidades visuais para empresas,
+              profissionais e novos projetos no Rio de Janeiro. Também atendo remotamente
+              clientes de todo o Brasil, do planejamento à entrega final.
+            </p>
           </div>
         </section>
 
